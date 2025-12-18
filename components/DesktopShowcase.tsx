@@ -22,8 +22,35 @@ const screens = [
   }
 ];
 
+// Preload images for faster display
+const preloadImages = () => {
+  screens.forEach(screen => {
+    const img = new Image();
+    img.src = screen.img;
+  });
+};
+
 const DesktopShowcase: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload images on mount
+  useEffect(() => {
+    preloadImages();
+
+    // Track loading of all images
+    let loadedCount = 0;
+    screens.forEach(screen => {
+      const img = new Image();
+      img.src = screen.img;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === screens.length) {
+          setImagesLoaded(true);
+        }
+      };
+    });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,7 +60,7 @@ const DesktopShowcase: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative h-[350px] sm:h-[450px] md:h-[600px] lg:h-[700px] w-full flex items-center justify-center overflow-visible px-4">
+    <div className="relative h-[420px] sm:h-[500px] md:h-[650px] lg:h-[750px] w-full flex items-center justify-center overflow-visible px-4">
       {/* Glow Centralizado de fundo para dar profundidade */}
       <div className="absolute inset-0 bg-blue-100/10 rounded-full -z-10 blur-[150px] scale-150"></div>
 
@@ -44,7 +71,7 @@ const DesktopShowcase: React.FC = () => {
           const isNext = index === (activeIndex + 1) % screens.length;
 
           let positionClass = "opacity-0 scale-75 translate-x-0 z-0 pointer-events-none";
-          
+
           if (isFocused) {
             positionClass = "opacity-100 scale-100 z-30 translate-x-0 shadow-[0_30px_100px_-20px_rgba(0,0,0,0.4)] pointer-events-auto";
           } else if (isPrev) {
@@ -54,7 +81,7 @@ const DesktopShowcase: React.FC = () => {
           }
 
           return (
-            <div 
+            <div
               key={screen.id}
               className={`absolute transition-all duration-1000 cubic-bezier(0.23, 1, 0.32, 1) w-[92%] md:w-[80%] lg:w-[75%] aspect-video bg-white rounded-xl md:rounded-[2rem] border border-slate-200/80 overflow-hidden ${positionClass}`}
             >
@@ -75,11 +102,19 @@ const DesktopShowcase: React.FC = () => {
 
               {/* Conteúdo da Tela */}
               <div className="relative w-full h-full bg-slate-900 overflow-hidden">
-                <img 
-                  src={screen.img} 
+                {/* Skeleton loader */}
+                {!imagesLoaded && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 animate-pulse">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/20 to-transparent skeleton-shimmer"></div>
+                  </div>
+                )}
+                <img
+                  src={screen.img}
                   alt={screen.title}
                   loading="eager"
-                  className={`w-full h-full object-cover transition-all duration-[2000ms] ${isFocused ? 'opacity-100 scale-105' : 'opacity-20 grayscale blur-[8px] scale-100'}`}
+                  decoding="async"
+                  fetchPriority={isFocused ? "high" : "low"}
+                  className={`w-full h-full object-cover transition-all duration-[2000ms] ${imagesLoaded ? '' : 'opacity-0'} ${isFocused ? 'opacity-100 scale-105' : 'opacity-20 grayscale blur-[8px] scale-100'}`}
                 />
                 {/* Gradiente de Foco */}
                 <div className={`absolute inset-0 bg-gradient-to-tr from-blue-600/10 via-transparent to-transparent pointer-events-none transition-opacity duration-1000 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
@@ -92,7 +127,7 @@ const DesktopShowcase: React.FC = () => {
       {/* Indicadores de Paginação */}
       <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-40 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
         {screens.map((_, i) => (
-          <button 
+          <button
             key={i}
             onClick={() => setActiveIndex(i)}
             className={`h-1.5 md:h-2 rounded-full transition-all duration-700 ${i === activeIndex ? 'w-10 md:w-16 bg-blue-500' : 'w-2 bg-white/30 hover:bg-white/50'}`}
