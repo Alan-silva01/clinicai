@@ -4,25 +4,39 @@ import Header from './components/Header';
 import ProjectIntroduction from './components/ProjectIntroduction';
 import WhatsAppDemo from './components/WhatsAppDemo';
 import FullBriefing from './components/FullBriefing';
+import DetailedBriefing from './components/DetailedBriefing';
 import Footer from './components/Footer';
 import DesktopShowcase from './components/DesktopShowcase';
 import FeatureCards from './components/FeatureCards';
 
 const App: React.FC = () => {
-  const [view, setView] = useState<'home' | 'briefing'>('home');
+  const [view, setView] = useState<'home' | 'briefing' | 'detailed'>('home');
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [view]);
 
+  if (view === 'detailed') {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans">
+        <Header
+          onLogoClick={() => setView('home')}
+          onBriefingClick={() => setView('briefing')}
+        />
+        <DetailedBriefing onBack={() => setView('briefing')} />
+        <Footer />
+      </div>
+    );
+  }
+
   if (view === 'briefing') {
     return (
       <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans">
-        <Header 
-          onLogoClick={() => setView('home')} 
+        <Header
+          onLogoClick={() => setView('home')}
           onBriefingClick={() => setView('briefing')}
         />
-        <FullBriefing onBack={() => setView('home')} />
+        <FullBriefing onBack={() => setView('home')} onViewMore={() => setView('detailed')} />
         <Footer />
       </div>
     );
@@ -30,16 +44,16 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100 overflow-x-hidden">
-      <Header 
-        onLogoClick={() => setView('home')} 
+      <Header
+        onLogoClick={() => setView('home')}
         onBriefingClick={() => setView('briefing')}
       />
-      
+
       <main>
         {/* HERO SECTION: Título + Telas Desktop (Sem Cortes) */}
         <section className="relative pt-12 md:pt-20 pb-0 bg-gradient-to-b from-blue-50/50 to-white">
           <div className="max-w-7xl mx-auto px-6 relative z-30 text-center mb-12 md:mb-16">
-            <ProjectIntroduction 
+            <ProjectIntroduction
               title="Sua Clínica no Piloto Automático"
               tagline="Atendimento humano, ágil e que fecha vendas sozinho pelo WhatsApp."
             />
@@ -82,12 +96,12 @@ const App: React.FC = () => {
 
         {/* FRASE FINAL */}
         <section className="max-w-5xl mx-auto px-6 py-32 text-center border-t border-slate-100">
-           <h2 className="text-3xl md:text-6xl font-black text-slate-900 leading-[1.1] italic">
+          <h2 className="text-3xl md:text-6xl font-black text-slate-900 leading-[1.1] italic">
             "Sua recepção foca no acolhimento, nossa IA foca em toda a burocracia e venda."
-           </h2>
-           <div className="mt-16">
-             <button 
-              onClick={() => setView('briefing')} 
+          </h2>
+          <div className="mt-16">
+            <button
+              onClick={() => setView('briefing')}
               className="group bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 rounded-2xl font-black text-2xl transition-all shadow-2xl shadow-blue-500/30 active:scale-95 flex items-center space-x-4 mx-auto"
             >
               <span>Explorar o Projeto</span>
@@ -95,7 +109,7 @@ const App: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </button>
-           </div>
+          </div>
         </section>
       </main>
 

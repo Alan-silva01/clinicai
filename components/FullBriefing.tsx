@@ -3,13 +3,14 @@ import React from 'react';
 
 interface Props {
   onBack: () => void;
+  onViewMore?: () => void;
 }
 
-const FullBriefing: React.FC<Props> = ({ onBack }) => {
+const FullBriefing: React.FC<Props> = ({ onBack, onViewMore }) => {
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 pb-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Botão Voltar */}
-      <button 
+      <button
         onClick={onBack}
         className="flex items-center space-x-3 text-slate-500 hover:text-blue-600 transition-all mb-12 group bg-white px-5 py-2 rounded-full border border-slate-100 shadow-sm"
       >
@@ -58,7 +59,7 @@ const FullBriefing: React.FC<Props> = ({ onBack }) => {
                 { t: "Lembrete 2h Antes", d: "Mensagem automática de lembrete no dia, reduzindo esquecimentos em 90%." }
               ].map((item, i) => (
                 <div key={i} className="flex space-x-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold shrink-0">{i+1}</div>
+                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold shrink-0">{i + 1}</div>
                   <div>
                     <h4 className="font-bold text-lg">{item.t}</h4>
                     <p className="text-slate-400 text-sm">{item.d}</p>
@@ -67,13 +68,13 @@ const FullBriefing: React.FC<Props> = ({ onBack }) => {
               ))}
             </div>
             <div className="space-y-8">
-               {[
+              {[
                 { t: "Autonomia no Reagendamento", d: "Paciente muda o horário pelo WhatsApp. Se já pagou, a IA apenas atualiza o calendário." },
                 { t: "Follow-up de Procedimento", d: "Pergunta como o paciente está se sentindo após o tratamento. Atenção total." },
                 { t: "Motor de Recorrência", d: "Após 6 meses, a IA convida para a manutenção. Paciente fidelizado e faturamento garantido." }
               ].map((item, i) => (
                 <div key={i} className="flex space-x-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center font-bold shrink-0 text-slate-900">{i+4}</div>
+                  <div className="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center font-bold shrink-0 text-slate-900">{i + 4}</div>
                   <div>
                     <h4 className="font-bold text-lg">{item.t}</h4>
                     <p className="text-slate-400 text-sm">{item.d}</p>
@@ -86,12 +87,27 @@ const FullBriefing: React.FC<Props> = ({ onBack }) => {
 
         <section className="text-center py-12">
           <h3 className="text-2xl font-bold mb-8 italic text-slate-600">"Sua clínica nunca mais para de vender."</h3>
-          <div className="inline-flex flex-wrap justify-center gap-4">
+          <div className="inline-flex flex-wrap justify-center gap-4 mb-12">
             <span className="bg-green-100 text-green-700 px-6 py-2 rounded-full text-xs font-bold border border-green-200">24/7 Ativo</span>
             <span className="bg-blue-100 text-blue-700 px-6 py-2 rounded-full text-xs font-bold border border-blue-200">Integração Asaas</span>
             <span className="bg-indigo-100 text-indigo-700 px-6 py-2 rounded-full text-xs font-bold border border-indigo-200">Google Calendar</span>
             <span className="bg-purple-100 text-purple-700 px-6 py-2 rounded-full text-xs font-bold border border-purple-200">IA Generativa</span>
           </div>
+
+          {/* Botão Ver Mais */}
+          {onViewMore && (
+            <div className="mt-8">
+              <button
+                onClick={onViewMore}
+                className="group bg-slate-900 hover:bg-slate-800 text-white px-10 py-5 rounded-2xl font-bold text-lg transition-all shadow-xl shadow-slate-900/20 active:scale-95 inline-flex items-center space-x-3"
+              >
+                <span>Ver documentação completa</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+            </div>
+          )}
         </section>
       </div>
     </div>
