@@ -3,9 +3,10 @@ import React from 'react';
 
 interface Props {
     onBack: () => void;
+    onPricingClick?: () => void;
 }
 
-const DetailedBriefing: React.FC<Props> = ({ onBack }) => {
+const DetailedBriefing: React.FC<Props> = ({ onBack, onPricingClick }) => {
     return (
         <div className="max-w-5xl mx-auto px-6 py-12 pb-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Botão Voltar */}
@@ -299,10 +300,24 @@ const DetailedBriefing: React.FC<Props> = ({ onBack }) => {
                 </section>
 
                 {/* Footer */}
-                <div className="text-center py-8 border-t border-slate-100">
-                    <p className="text-slate-400 text-sm italic">
+                <div className="text-center py-12 border-t border-slate-100">
+                    <p className="text-slate-400 text-sm italic mb-12">
                         Sistema 100% customizável. Valores, regras e mensagens ajustáveis para sua clínica.
                     </p>
+
+                    {onPricingClick && (
+                        <div className="mt-8">
+                            <button
+                                onClick={onPricingClick}
+                                className="group bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 rounded-[2rem] font-black text-xl transition-all shadow-2xl shadow-blue-500/30 active:scale-95 flex items-center space-x-4 mx-auto"
+                            >
+                                <span>Ter estimativa de preços</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -8,9 +8,10 @@ import DetailedBriefing from './components/DetailedBriefing';
 import Footer from './components/Footer';
 import DesktopShowcase from './components/DesktopShowcase';
 import FeatureCards from './components/FeatureCards';
+import PricingComparison from './components/PricingComparison';
 
 const App: React.FC = () => {
-  const [view, setView] = useState<'home' | 'briefing' | 'detailed'>('home');
+  const [view, setView] = useState<'home' | 'briefing' | 'detailed' | 'pricing'>('home');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,7 +24,23 @@ const App: React.FC = () => {
           onLogoClick={() => setView('home')}
           onBriefingClick={() => setView('briefing')}
         />
-        <DetailedBriefing onBack={() => setView('briefing')} />
+        <DetailedBriefing
+          onBack={() => setView('briefing')}
+          onPricingClick={() => setView('pricing')}
+        />
+        <Footer />
+      </div>
+    );
+  }
+
+  if (view === 'pricing') {
+    return (
+      <div className="min-h-screen bg-white text-slate-900 font-sans">
+        <Header
+          onLogoClick={() => setView('home')}
+          onBriefingClick={() => setView('briefing')}
+        />
+        <PricingComparison onBack={() => setView('detailed')} />
         <Footer />
       </div>
     );
@@ -93,6 +110,8 @@ const App: React.FC = () => {
             </div>
           </div>
         </section>
+
+        {/* PRICING REMOVED FROM HOME AS REQUESTED */}
 
         {/* FRASE FINAL */}
         <section className="max-w-5xl mx-auto px-6 py-32 text-center border-t border-slate-100">
